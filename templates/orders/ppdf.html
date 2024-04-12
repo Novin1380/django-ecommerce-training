@@ -1,0 +1,155 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <!-- Font Awesome -->
+    {% comment %} <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"> {% endcomment %}
+    {% comment %} <!-- Custom Style -->
+    <link rel="stylesheet"  href="{% static 'css/invoice.css' %}"> {% endcomment %}
+
+    <title>Invoice..!</title>
+</head>
+
+<body>
+    <div class="my-5 page" size="A4">
+        <div class="p-5">
+            <section class="top-content bb d-flex justify-content-between">
+                <div class="logo">
+                    <img src="logo.png" alt="" class="img-fluid">
+                </div>
+                <div class="top-left">
+                    <div class="graphic-path">
+                        <p>Invoice</p>
+                    </div>
+                    <div class="position-relative">
+                        <p>Invoice No. <span>{{order.id}}</span></p>
+                        <p>Order Date: <span>{{order.created|date:"M d Y"}}</span></p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="store-user mt-5">
+                <div class="col-10">
+                    <div class="row bb pb-3">
+                        <div class="col-7">
+                            <p>Supplier,</p>
+                            <h5>nnovaa KALA</h5>
+                            {% comment %} <p class="address"> 777 Brockton Avenue, <br> Abington MA 2351, <br>Vestavia Hills AL </p>
+                            <div class="txn mt-2">TXN: XXXXXXX</div> {% endcomment %}
+                        </div>
+                        <div class="col-5" style="margin-left: 200px;">
+                            <p>Client,</p>
+                            <h5>{{order.first_name}} {{order.last_name}}</h5>
+                            <p class="address">{{order.email}}</p>
+                            <p class="address">{{order.address}}<br>  <br> </p>
+                            <div class="txn mt-2">Postal Code: {{order.zip_code}}</div>
+                        </div>
+                    </div>
+                    <div class="row extra-info pt-3">
+                        <div class="col-7">
+                            <p>Payment Method: <span>Zarinpal</span></p>
+                            
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="product-area mt-4">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <td>Item Description</td>
+                            <td>Price</td>
+                            <td>Quantity</td>
+                            <td>Total</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in order.items.all  %}
+                        <tr>
+                            <td>
+                                <div class="media">
+                                    <img class="mr-3 img-fluid" src="{{item.product.image.url}}" alt="Product 01">
+                                    <div class="media-body">
+                                        <p class="mt-0 title">{{item.product.name}}</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>{{item.price}}</td>
+                            <td>{{item.quantity}}</td>
+                            <td>{{item.get_cost}}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </section>
+
+            <section class="balance-info">
+                <div class="row">
+                    <div class="col-8">
+                        <p class="m-0 font-weight-bold"> Note: </p>
+                        <p>Thank you for your cart . we will contact you in few days !</p>
+                    </div>
+                    <div class="col-4">
+                        <table class="table border-0 table-hover">
+                            <tr>
+                                <td>Sub Total:</td>
+                                <td>{{cart.get_total_price}}</td>
+                            </tr>
+                            <tr>
+                                <td>Tax:</td>
+                                <td>Free</td>
+                            </tr>
+                            <tr>
+                                <td>Deliver:</td>
+                                <td>Free</td>
+                            </tr>
+                            <tfoot>
+                                
+                                {% comment %} <tr>
+                                    <td>Discount:</td>
+                                    <td> {{cart.coupon.discount}}%</td>
+                                </tr>
+                                <tr>
+                                    <td>Total:</td>
+                                    <td>{{cart.get_total_price_after_discount}}</td>
+                                </tr>
+                                 {% endcomment %}
+                                <tr>
+                                    <td>Total:</td>
+                                    <td>{{order.get_total_cost}}</td>
+                                </tr>
+                                
+                            </tfoot>
+                        </table>
+
+                        <!-- Signature -->
+                        <div class="col-12">
+                            <img src="{% static 'invoice/signature.png' %}" class="img-fluid" alt="">
+                            <p class="text-center m-0"> Director Signature </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Cart BG -->
+            <img src="{% static 'invoice/cart.jpg' %}" class="img-fluid cart-bg" alt="">
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+</body></html>
